@@ -1,0 +1,431 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E047509A1AECD03500AA0825 /* StringUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E04750991AECD03500AA0825 /* StringUtils.cpp */; };
+		E053FB011AD7DAC4000F2C3E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E053FB001AD7DAC4000F2C3E /* main.cpp */; };
+		E053FB071AD7DAEE000F2C3E /* OpenCL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E053FB061AD7DAEE000F2C3E /* OpenCL.framework */; };
+		E05B7BF71B0CF58B001D08A2 /* OpenCLInvertexIndex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E05B7BF61B0CF58B001D08A2 /* OpenCLInvertexIndex.cpp */; };
+		E065F9B41AE2E50A00B942BE /* libhtml2text-lib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E065F9B31AE2E50A00B942BE /* libhtml2text-lib.a */; };
+		E065F9B61AE2E58800B942BE /* ParserHTML.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E065F9B51AE2E58800B942BE /* ParserHTML.cpp */; };
+		E06FB8BE1ADBA7D0002C544C /* OpenCLProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E06FB8BD1ADBA7D0002C544C /* OpenCLProgram.cpp */; };
+		E08BFC881AF0CD260016E290 /* AlignedAllocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E08BFC861AF0CD260016E290 /* AlignedAllocator.cpp */; };
+		E0923A971AF3E11D00C03B55 /* Utf8LowerUpper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0923A961AF3A5C100C03B55 /* Utf8LowerUpper.cpp */; };
+		E0FD6A0C1AE1075F00574083 /* libcurl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E0FD6A0B1AE1075F00574083 /* libcurl.dylib */; };
+		E0FD6A0E1AE112D100574083 /* GetHTTP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0FD6A0D1AE112D100574083 /* GetHTTP.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E053FAF31AD7DA8E000F2C3E /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		E00FF3C71AED275900EA22DC /* SiteMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SiteMapping.h; sourceTree = "<group>"; };
+		E00FF3C81AED275900EA22DC /* WebSite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebSite.h; sourceTree = "<group>"; };
+		E02AEB181AF2562B00C15656 /* InvertedIndex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InvertedIndex.h; sourceTree = "<group>"; };
+		E041E8541AE145FF0003BE29 /* OpenCLErrors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenCLErrors.h; sourceTree = "<group>"; };
+		E04750991AECD03500AA0825 /* StringUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringUtils.cpp; sourceTree = "<group>"; };
+		E053FAF51AD7DA8E000F2C3E /* Word-indexing-in-web-page */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Word-indexing-in-web-page"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E053FB001AD7DAC4000F2C3E /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		E053FB031AD7DAD2000F2C3E /* Config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
+		E053FB041AD7DAD2000F2C3E /* OpenCLInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenCLInfo.h; sourceTree = "<group>"; };
+		E053FB061AD7DAEE000F2C3E /* OpenCL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenCL.framework; path = System/Library/Frameworks/OpenCL.framework; sourceTree = SDKROOT; };
+		E053FB081AD7E026000F2C3E /* StringUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StringUtils.h; sourceTree = "<group>"; };
+		E05B7BF61B0CF58B001D08A2 /* OpenCLInvertexIndex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenCLInvertexIndex.cpp; sourceTree = "<group>"; };
+		E065F9A71AE2E50A00B942BE /* Area.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Area.h; sourceTree = "<group>"; };
+		E065F9A81AE2E50A00B942BE /* auto_aptr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = auto_aptr.h; sourceTree = "<group>"; };
+		E065F9A91AE2E50A00B942BE /* auto_ptr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = auto_ptr.h; sourceTree = "<group>"; };
+		E065F9AA1AE2E50A00B942BE /* cmp_nocase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cmp_nocase.h; sourceTree = "<group>"; };
+		E065F9AB1AE2E50A00B942BE /* format.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = format.h; sourceTree = "<group>"; };
+		E065F9AC1AE2E50A00B942BE /* html.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = html.h; sourceTree = "<group>"; };
+		E065F9AD1AE2E50A00B942BE /* HTMLControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTMLControl.h; sourceTree = "<group>"; };
+		E065F9AE1AE2E50A00B942BE /* HTMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTMLParser.h; sourceTree = "<group>"; };
+		E065F9AF1AE2E50A00B942BE /* Properties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Properties.h; sourceTree = "<group>"; };
+		E065F9B01AE2E50A00B942BE /* sgml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sgml.h; sourceTree = "<group>"; };
+		E065F9B11AE2E50A00B942BE /* urlistream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = urlistream.h; sourceTree = "<group>"; };
+		E065F9B31AE2E50A00B942BE /* libhtml2text-lib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libhtml2text-lib.a"; sourceTree = "<group>"; };
+		E065F9B51AE2E58800B942BE /* ParserHTML.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ParserHTML.cpp; sourceTree = "<group>"; };
+		E065F9B71AE3B90200B942BE /* ParserHTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParserHTML.h; sourceTree = "<group>"; };
+		E06FB8BD1ADBA7D0002C544C /* OpenCLProgram.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenCLProgram.cpp; sourceTree = "<group>"; };
+		E07D7F1C1AD83FA200EC327D /* GCPointer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GCPointer.h; sourceTree = "<group>"; };
+		E07D7F1D1AD8404C00EC327D /* OpenCLBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenCLBuffer.h; sourceTree = "<group>"; };
+		E07D7F1E1AD8450000EC327D /* OpenCLQueue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenCLQueue.h; sourceTree = "<group>"; };
+		E07D7F1F1AD8504F00EC327D /* OpenCLProgram.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenCLProgram.h; sourceTree = "<group>"; };
+		E080FAA61AEF7344003090FE /* mapping_site.cl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.opencl; path = mapping_site.cl; sourceTree = "<group>"; };
+		E0870C951B0F1E260053D52F /* inverted_index_pages.cl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.opencl; path = inverted_index_pages.cl; sourceTree = "<group>"; };
+		E0870C961B0F1E260053D52F /* inverted_index_words.cl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.opencl; path = inverted_index_words.cl; sourceTree = "<group>"; };
+		E08BFC851AF0C9860016E290 /* AlignedAllocator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlignedAllocator.h; sourceTree = "<group>"; };
+		E08BFC861AF0CD260016E290 /* AlignedAllocator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AlignedAllocator.cpp; sourceTree = "<group>"; };
+		E0923A961AF3A5C100C03B55 /* Utf8LowerUpper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Utf8LowerUpper.cpp; sourceTree = "<group>"; };
+		E0CB4D281B0B652800EEAA0E /* OpenCLInvertexIndex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenCLInvertexIndex.h; sourceTree = "<group>"; };
+		E0CB4D291B0B65C900EEAA0E /* map_row.cl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.opencl; path = map_row.cl; sourceTree = "<group>"; };
+		E0CB4D2B1B0B690000EEAA0E /* word_utils.cl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.opencl; path = word_utils.cl; sourceTree = "<group>"; };
+		E0D587291AD8074900FBE903 /* OpenCLContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenCLContext.h; sourceTree = "<group>"; };
+		E0D806191AD9430F00569BC3 /* OpenCLKernel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenCLKernel.h; sourceTree = "<group>"; };
+		E0EC5F751AF4BE29008106A8 /* utf8_utils.cl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.opencl; path = utf8_utils.cl; sourceTree = "<group>"; };
+		E0EC5F771AF4C57F008106A8 /* debug.cl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.opencl; path = debug.cl; sourceTree = "<group>"; };
+		E0FD6A0B1AE1075F00574083 /* libcurl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcurl.dylib; path = usr/lib/libcurl.dylib; sourceTree = SDKROOT; };
+		E0FD6A0D1AE112D100574083 /* GetHTTP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GetHTTP.cpp; sourceTree = "<group>"; };
+		E0FD6A0F1AE112D900574083 /* GetHTTP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetHTTP.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E053FAF21AD7DA8E000F2C3E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E065F9B41AE2E50A00B942BE /* libhtml2text-lib.a in Frameworks */,
+				E0FD6A0C1AE1075F00574083 /* libcurl.dylib in Frameworks */,
+				E053FB071AD7DAEE000F2C3E /* OpenCL.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E053FAEC1AD7DA8E000F2C3E = {
+			isa = PBXGroup;
+			children = (
+				E065F9A41AE2E50A00B942BE /* dipendencies-osx */,
+				E07D7F221AD8589100EC327D /* script */,
+				E053FB051AD7DAD9000F2C3E /* framework */,
+				E053FB021AD7DAD2000F2C3E /* include */,
+				E053FAFF1AD7DAC4000F2C3E /* src */,
+				E053FAF61AD7DA8E000F2C3E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E053FAF61AD7DA8E000F2C3E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E053FAF51AD7DA8E000F2C3E /* Word-indexing-in-web-page */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E053FAFF1AD7DAC4000F2C3E /* src */ = {
+			isa = PBXGroup;
+			children = (
+				E04750991AECD03500AA0825 /* StringUtils.cpp */,
+				E065F9B51AE2E58800B942BE /* ParserHTML.cpp */,
+				E0FD6A0D1AE112D100574083 /* GetHTTP.cpp */,
+				E06FB8BD1ADBA7D0002C544C /* OpenCLProgram.cpp */,
+				E053FB001AD7DAC4000F2C3E /* main.cpp */,
+				E08BFC861AF0CD260016E290 /* AlignedAllocator.cpp */,
+				E0923A961AF3A5C100C03B55 /* Utf8LowerUpper.cpp */,
+				E05B7BF61B0CF58B001D08A2 /* OpenCLInvertexIndex.cpp */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		E053FB021AD7DAD2000F2C3E /* include */ = {
+			isa = PBXGroup;
+			children = (
+				E02AEB181AF2562B00C15656 /* InvertedIndex.h */,
+				E00FF3C71AED275900EA22DC /* SiteMapping.h */,
+				E00FF3C81AED275900EA22DC /* WebSite.h */,
+				E065F9B71AE3B90200B942BE /* ParserHTML.h */,
+				E0FD6A0F1AE112D900574083 /* GetHTTP.h */,
+				E0D806191AD9430F00569BC3 /* OpenCLKernel.h */,
+				E053FB031AD7DAD2000F2C3E /* Config.h */,
+				E053FB041AD7DAD2000F2C3E /* OpenCLInfo.h */,
+				E053FB081AD7E026000F2C3E /* StringUtils.h */,
+				E0D587291AD8074900FBE903 /* OpenCLContext.h */,
+				E07D7F1C1AD83FA200EC327D /* GCPointer.h */,
+				E07D7F1D1AD8404C00EC327D /* OpenCLBuffer.h */,
+				E07D7F1E1AD8450000EC327D /* OpenCLQueue.h */,
+				E07D7F1F1AD8504F00EC327D /* OpenCLProgram.h */,
+				E041E8541AE145FF0003BE29 /* OpenCLErrors.h */,
+				E08BFC851AF0C9860016E290 /* AlignedAllocator.h */,
+				E0CB4D281B0B652800EEAA0E /* OpenCLInvertexIndex.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		E053FB051AD7DAD9000F2C3E /* framework */ = {
+			isa = PBXGroup;
+			children = (
+				E053FB061AD7DAEE000F2C3E /* OpenCL.framework */,
+				E0FD6A0B1AE1075F00574083 /* libcurl.dylib */,
+			);
+			name = framework;
+			sourceTree = "<group>";
+		};
+		E065F9A41AE2E50A00B942BE /* dipendencies-osx */ = {
+			isa = PBXGroup;
+			children = (
+				E065F9A51AE2E50A00B942BE /* include */,
+				E065F9B21AE2E50A00B942BE /* lib */,
+			);
+			path = "dipendencies-osx";
+			sourceTree = "<group>";
+		};
+		E065F9A51AE2E50A00B942BE /* include */ = {
+			isa = PBXGroup;
+			children = (
+				E065F9A61AE2E50A00B942BE /* html2text */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		E065F9A61AE2E50A00B942BE /* html2text */ = {
+			isa = PBXGroup;
+			children = (
+				E065F9A71AE2E50A00B942BE /* Area.h */,
+				E065F9A81AE2E50A00B942BE /* auto_aptr.h */,
+				E065F9A91AE2E50A00B942BE /* auto_ptr.h */,
+				E065F9AA1AE2E50A00B942BE /* cmp_nocase.h */,
+				E065F9AB1AE2E50A00B942BE /* format.h */,
+				E065F9AC1AE2E50A00B942BE /* html.h */,
+				E065F9AD1AE2E50A00B942BE /* HTMLControl.h */,
+				E065F9AE1AE2E50A00B942BE /* HTMLParser.h */,
+				E065F9AF1AE2E50A00B942BE /* Properties.h */,
+				E065F9B01AE2E50A00B942BE /* sgml.h */,
+				E065F9B11AE2E50A00B942BE /* urlistream.h */,
+			);
+			path = html2text;
+			sourceTree = "<group>";
+		};
+		E065F9B21AE2E50A00B942BE /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				E065F9B31AE2E50A00B942BE /* libhtml2text-lib.a */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
+		E07D7F221AD8589100EC327D /* script */ = {
+			isa = PBXGroup;
+			children = (
+				E0870C951B0F1E260053D52F /* inverted_index_pages.cl */,
+				E0870C961B0F1E260053D52F /* inverted_index_words.cl */,
+				E0CB4D2B1B0B690000EEAA0E /* word_utils.cl */,
+				E080FAA61AEF7344003090FE /* mapping_site.cl */,
+				E0EC5F751AF4BE29008106A8 /* utf8_utils.cl */,
+				E0EC5F771AF4C57F008106A8 /* debug.cl */,
+				E0CB4D291B0B65C900EEAA0E /* map_row.cl */,
+			);
+			path = script;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E053FAF41AD7DA8E000F2C3E /* Word-indexing-in-web-page */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E053FAFC1AD7DA8E000F2C3E /* Build configuration list for PBXNativeTarget "Word-indexing-in-web-page" */;
+			buildPhases = (
+				E053FAF11AD7DA8E000F2C3E /* Sources */,
+				E053FAF21AD7DA8E000F2C3E /* Frameworks */,
+				E053FAF31AD7DA8E000F2C3E /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Word-indexing-in-web-page";
+			productName = WordIndexingInWebPage;
+			productReference = E053FAF51AD7DA8E000F2C3E /* Word-indexing-in-web-page */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E053FAED1AD7DA8E000F2C3E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0620;
+				ORGANIZATIONNAME = "Gabriele Di Bari";
+				TargetAttributes = {
+					E053FAF41AD7DA8E000F2C3E = {
+						CreatedOnToolsVersion = 6.2;
+					};
+				};
+			};
+			buildConfigurationList = E053FAF01AD7DA8E000F2C3E /* Build configuration list for PBXProject "Word-indexing-in-web-page" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = E053FAEC1AD7DA8E000F2C3E;
+			productRefGroup = E053FAF61AD7DA8E000F2C3E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E053FAF41AD7DA8E000F2C3E /* Word-indexing-in-web-page */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E053FAF11AD7DA8E000F2C3E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E047509A1AECD03500AA0825 /* StringUtils.cpp in Sources */,
+				E0FD6A0E1AE112D100574083 /* GetHTTP.cpp in Sources */,
+				E08BFC881AF0CD260016E290 /* AlignedAllocator.cpp in Sources */,
+				E065F9B61AE2E58800B942BE /* ParserHTML.cpp in Sources */,
+				E06FB8BE1ADBA7D0002C544C /* OpenCLProgram.cpp in Sources */,
+				E053FB011AD7DAC4000F2C3E /* main.cpp in Sources */,
+				E05B7BF71B0CF58B001D08A2 /* OpenCLInvertexIndex.cpp in Sources */,
+				E0923A971AF3E11D00C03B55 /* Utf8LowerUpper.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		E053FAFA1AD7DA8E000F2C3E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					include/,
+					"dipendencies-osx/include/",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = (
+					"-DAUTO_PTR_BROKEN",
+					"-D_DEBUG",
+				);
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		E053FAFB1AD7DA8E000F2C3E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					include/,
+					"dipendencies-osx/include/",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_CFLAGS = "-DAUTO_PTR_BROKEN";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		E053FAFD1AD7DA8E000F2C3E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/dipendencies-osx/lib",
+				);
+				PRODUCT_NAME = "Word-indexing-in-web-page";
+			};
+			name = Debug;
+		};
+		E053FAFE1AD7DA8E000F2C3E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/dipendencies-osx/lib",
+				);
+				PRODUCT_NAME = "Word-indexing-in-web-page";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E053FAF01AD7DA8E000F2C3E /* Build configuration list for PBXProject "Word-indexing-in-web-page" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E053FAFA1AD7DA8E000F2C3E /* Debug */,
+				E053FAFB1AD7DA8E000F2C3E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E053FAFC1AD7DA8E000F2C3E /* Build configuration list for PBXNativeTarget "Word-indexing-in-web-page" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E053FAFD1AD7DA8E000F2C3E /* Debug */,
+				E053FAFE1AD7DA8E000F2C3E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E053FAED1AD7DA8E000F2C3E /* Project object */;
+}

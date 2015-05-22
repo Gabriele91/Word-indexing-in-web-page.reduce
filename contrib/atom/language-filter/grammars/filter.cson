@@ -1,0 +1,22 @@
+
+'scopeName': 'source.filter'
+'name': 'Filter'
+'fileTypes': [
+  'filter'
+  'fl'
+]
+'patterns': [
+  {
+    'begin': '\\s*(\:)'
+    'end': '\\s*(\;)'
+    'name': 'entity.name.function.decorator.python'
+  }
+  {
+    'match': '\\s*(?i:(words|length))\\s*'
+    'name': 'keyword.control.statement.python'
+  }
+  {
+    'match': '\\s*(?i:(case))\\s*(?i:(sensitive))\\s*'
+    'name': 'keyword.control.statement.python'
+  }
+]
