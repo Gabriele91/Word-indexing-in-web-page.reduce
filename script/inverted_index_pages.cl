@@ -68,12 +68,17 @@ kernel void inverted_index_pages
     ADDSQ Row*       page_map  = (ADDSQ Row*)      (raw_maps + maps_info->m_offset);
 
     CPU(
-        printf("id %u, size row %u, n rows %u, offset %u, page %u\n", 
+        printf("id %u, size row %u, n rows %u, offset %u, page %u ||  "
+               "n_maps: %u, start_map: %u, word_capacity: %u, cout_rows: %u\n",
                 g_id,
                 maps_info->m_row,
                 maps_info->m_size,
                 maps_info->m_offset,
-                maps_info->m_page
+                maps_info->m_page,
+                n_maps,
+                start_map,
+                word_capacity,
+                cout_rows
                 );
     )
     //add map to big map

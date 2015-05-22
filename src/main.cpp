@@ -232,7 +232,7 @@ int main()
     );
     MESSAGE( OpenCLInfo::to_string() );
     //test create context
-    OpenCLContext::DeviceType type = OpenCLContext::TYPE_ALL;
+    OpenCLContext::DeviceType type = OpenCLContext::TYPE_CPU;
     OpenCLContext context(type);
     auto platform = context.get_platform();
     //print platform
@@ -260,6 +260,7 @@ int main()
             }
     );
     ////////////////////////////////////////////////////////////////////////////////////////////////
+#if 0
     DEBUGCODE
     (
          MESSAGE("SAVE MAPPING")
@@ -278,6 +279,7 @@ int main()
              ++i;
          }
      );
+#endif
 #ifdef ONLY_CPU
     MESSAGE("START REDUCE")
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -317,7 +319,7 @@ int main()
                                         size_t w_end  =w_start + words;
                                         std::stringstream out_str;
                                         //write
-                                        for(size_t v=w_start; v!=w_end ;++v)
+                                        for(size_t v=w_start; v!=w_end && v!=data.size() ;++v)
                                         {
                                             out_str << (v-w_start) << " : " << data[v] << "\n";
                                         }

@@ -274,7 +274,7 @@ public:
      size_t end,
      size_t word_len,
      const std::vector<  PageMapping::Map::ptr  >& maps,
-     WordMapInvertedIndex::InvertedIndexMap::ptr iimap
+     WordMapInvertedIndex::InvertedIndexMap::ptr& iimap
      )
     {
         assert( iimap );
@@ -297,7 +297,7 @@ public:
             maps_size            += maps[i]->byte_size();
         }
         //alloc buffer
-        m_value.resize(iimap->real_count_row());
+        if(m_value.size()!=iimap->real_count_row()) m_value.resize(iimap->real_count_row());
         std::memset(m_value.data(), 0, m_value.size()*sizeof(cl_ushort));
         //create buffer
         m_cl_value= context.create_buffer(OpenCLMemory::READ_WRITE | OpenCLMemory::USE_HOST_PTR, m_value.size(), m_value.data());
@@ -320,7 +320,7 @@ public:
     void execute_task(OpenCLQueue::ptr  queue,
                       OpenCLKernel::ptr kernel,
                       OpenCLMemory::ptr cl_words,
-                      WordMapInvertedIndex::InvertedIndexMap::ptr iimap,
+                      WordMapInvertedIndex::InvertedIndexMap::ptr& iimap,
                       cl_event&& this_event)
     {
         const size_t cl_local_work_size = 1;
@@ -424,6 +424,8 @@ public:
         m_kernel_words = m_program_words->create_kernel(m_kernel_name_words);
         //-------------------------------------------------------------------------
        #if 1
+        //
+        options += " -DDEBUG ";
         //load source
         std::string source_pages = StringUtils::file_to_string(m_source_path_pages);
         //program
@@ -512,12 +514,15 @@ public:
             size_t size =maps.size();
             size_t added=0;
             size_t done =0;
-            std::vector< size_t >              id_devices;
+            
             
             //vector of columns
             std::vector< ColumMapInvertedIndex::ptr > v_cmii;
-            v_cmii.resize(id_devices.size());
+            v_cmii.resize(m_devices.size());
             
+            //map
+            for(auto& map_ptr:v_cmii) map_ptr =ColumMapInvertedIndex::shared_new();
+
             //events
             std::vector< cl_event > events;
             events.resize(m_devices.size());
@@ -591,26 +596,20 @@ public:
                             size_t this_worker_size = m_kernel_pages->get_work_goup_max_size(m_devices[i]);
                             //min
                             this_worker_size = std::min((size_t)64,std::min(this_worker_size, (size - added)));
-                            //save id of device
-                            id_devices.push_back(i);
-                            //new buffer
-                            ColumMapInvertedIndex::ptr cii_map= ColumMapInvertedIndex::shared_new();
-                            //save
-                            v_cmii.push_back(cii_map);
                             //init
-                            cii_map->init(context,
-                                          queues[i],
-                                          added,
-                                          this_worker_size+added,
-                                          word_len,
-                                          maps,
-                                          iimap);
+                            v_cmii[i]->init(context,
+                                            queues[i],
+                                            added,
+                                            this_worker_size+added,
+                                            word_len,
+                                            maps,
+                                            iimap);
                             //ececute task
-                            cii_map->execute_task(queues[i],
-                                                  m_kernel_pages,
-                                                  word_buffer,
-                                                  iimap,
-                                                  std::move(events[i]));
+                            v_cmii[i]->execute_task(queues[i],
+                                                    m_kernel_pages,
+                                                    word_buffer,
+                                                    iimap,
+                                                    std::move(events[i]));
                             //flush
                             queues[i]->flush();
                             //start at
