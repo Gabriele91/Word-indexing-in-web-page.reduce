@@ -507,6 +507,7 @@ public:
         OpenCLMemory::ptr word_buffer = iimap->create_buffer(context);
         //max size of a task
         const size_t mem_of_a_column = sizeof(cl_ushort) * iimap->real_count_row();
+        const size_t mem_max_for_task = 1024 * 1024 * 128 / m_devices.size();
         
         //compute columns
         {
