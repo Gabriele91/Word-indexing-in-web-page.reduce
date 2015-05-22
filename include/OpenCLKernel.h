@@ -29,16 +29,17 @@ class OpenCLKernel : public GCPointer< OpenCLKernel >
         m_kernel = kernel;
     }
     //info about kernel/device
-    cl_int get_info(cl_device_id device, cl_kernel_work_group_info info)
+    template< typename T >
+    T get_info(cl_device_id device, cl_kernel_work_group_info info)
     {
-        size_t out_value = 0;
+        T out_value = 0;
 
         cl_int error = clGetKernelWorkGroupInfo
             (
             m_kernel,
             device,
             info,
-            sizeof(size_t),
+            sizeof(T),
             (void*)&out_value,
             NULL
             );
@@ -85,14 +86,24 @@ public:
     }
 
 
-    cl_uint get_work_goup_max_size(cl_device_id device)
+    size_t get_work_goup_max_size(cl_device_id device)
     {
-        return get_info(device, CL_KERNEL_WORK_GROUP_SIZE);
+        return get_info<size_t>(device, CL_KERNEL_WORK_GROUP_SIZE);
     }
 
-    cl_uint get_prefered_work_goup_max_size_multiple(cl_device_id device)
+    size_t get_prefered_work_goup_max_size_multiple(cl_device_id device)
     {
-        return get_info(device, CL_KERNEL_PREFERRED_WORK_GROUP_SIZE_MULTIPLE);
+        return get_info<size_t>(device, CL_KERNEL_PREFERRED_WORK_GROUP_SIZE_MULTIPLE);
+    }
+
+    cl_uint get_private_mem_size(cl_device_id device)
+    {
+        return get_info<cl_ulong>(device, CL_KERNEL_PRIVATE_MEM_SIZE);
+    }
+
+    cl_uint get_local_mem_size(cl_device_id device)
+    {
+        return get_info<cl_ulong>(device, CL_KERNEL_LOCAL_MEM_SIZE);
     }
         
     std::vector< cl_int > set_args(const std::vector< cl_mem >& args)

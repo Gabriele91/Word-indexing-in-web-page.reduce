@@ -232,7 +232,7 @@ int main()
     );
     MESSAGE( OpenCLInfo::to_string() );
     //test create context
-    OpenCLContext::DeviceType type = OpenCLContext::TYPE_CPU;
+    OpenCLContext::DeviceType type = OpenCLContext::TYPE_ALL;
     OpenCLContext context(type);
     auto platform = context.get_platform();
     //print platform

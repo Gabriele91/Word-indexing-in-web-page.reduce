@@ -133,10 +133,10 @@ public:
         //mapping
         for(size_t i=start; i!=end; ++i)
         {
-            m_info[i].m_row    = (cl_ushort)maps[i]->row_size();//size of a row
-            m_info[i].m_size   = (cl_uint)maps[i]->size();    //count rows
-            m_info[i].m_offset = (cl_uint)maps_size;
-            m_info[i].m_page   = (cl_uint)i;
+            m_info[i - start].m_row = (cl_ushort)maps[i]->row_size();//size of a row
+            m_info[i - start].m_size = (cl_uint)maps[i]->size();    //count rows
+            m_info[i - start].m_offset = (cl_uint)maps_size;
+            m_info[i - start].m_page = (cl_uint)i;
             //max count words
             m_iimap->m_count_row += maps[i]->size();
             //size of maps
@@ -289,15 +289,15 @@ public:
         //mapping
         for(size_t i=start; i!=end; ++i)
         {
-            m_info[i].m_row    = (cl_ushort)maps[i]->row_size();//size of a row
-            m_info[i].m_size   = (cl_uint)maps[i]->size();    //count rows
-            m_info[i].m_offset = (cl_uint)maps_size;
-            m_info[i].m_page   = (cl_uint)i;
+            m_info[i - start].m_row = (cl_ushort)maps[i]->row_size();//size of a row
+            m_info[i - start].m_size = (cl_uint)maps[i]->size();    //count rows
+            m_info[i - start].m_offset = (cl_uint)maps_size;
+            m_info[i - start].m_page = (cl_uint)i;
             //size of maps
             maps_size            += maps[i]->byte_size();
         }
         //alloc buffer
-        if(m_value.size()!=iimap->real_count_row()) m_value.resize(iimap->real_count_row());
+        if (m_value.size() != iimap->real_count_row()) m_value.resize(iimap->real_count_row()*m_count_maps);
         std::memset(m_value.data(), 0, m_value.size()*sizeof(cl_ushort));
         //create buffer
         m_cl_value= context.create_buffer(OpenCLMemory::READ_WRITE | OpenCLMemory::USE_HOST_PTR, m_value.size(), m_value.data());
@@ -400,7 +400,6 @@ public:
         });
         //create options info
         std::string options = OpenCLProgram::include_option(m_include_path);
-        //options += " -DDEBUG "+OpenCLProgram::debug_option(m_source_path);
         //compile
         //-------------------------------------------------------------------------
         //load source
@@ -425,7 +424,7 @@ public:
         //-------------------------------------------------------------------------
        #if 1
         //
-        options += " -DDEBUG ";
+       // options += " -DDEBUG " + OpenCLProgram::debug_option(m_source_path_pages);
         //load source
         std::string source_pages = StringUtils::file_to_string(m_source_path_pages);
         //program
@@ -504,9 +503,10 @@ public:
             //save iimap
             iimap=last;
         }
-        
         //alloc buff of words map
         OpenCLMemory::ptr word_buffer = iimap->create_buffer(context);
+        //max size of a task
+        const size_t mem_of_a_column = sizeof(cl_ushort) * iimap->real_count_row();
         
         //compute columns
         {
@@ -561,6 +561,7 @@ public:
                     //event?
                     if(events[i])
                     {
+                        size_t param_value_size_ret=0;
                         //reset
                         event_status = CL_QUEUED;
                         //get info
@@ -568,7 +569,7 @@ public:
                                                     CL_EVENT_COMMAND_EXECUTION_STATUS,
                                                     sizeof(cl_int),
                                                     &event_status,
-                                                    NULL),  "Error: Failed to get event status");
+                                                    &param_value_size_ret), "Error: Failed to get event status");
                     }
                     //execute new instance
                     if(event_status == CL_COMPLETE)
@@ -594,8 +595,10 @@ public:
                         {
                             //init
                             size_t this_worker_size = m_kernel_pages->get_work_goup_max_size(m_devices[i]);
+                            //compute max work items mem
+                            size_t this_task_max_size = (mem_max_for_task - m_kernel_pages->get_local_mem_size(m_devices[i])) / mem_of_a_column;
                             //min
-                            this_worker_size = std::min((size_t)64,std::min(this_worker_size, (size - added)));
+                            this_worker_size = std::min(this_task_max_size, std::min(this_worker_size, (size - added)));
                             //init
                             v_cmii[i]->init(context,
                                             queues[i],
