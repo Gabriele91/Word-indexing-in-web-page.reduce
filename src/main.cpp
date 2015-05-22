@@ -124,14 +124,14 @@ int main(int argc,const char** args)
         }
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    VERBOSE("Start, loading site file: "<<o_site_path)
+    VERBOSE("Loading site file: "<<o_site_path)
     WebSite::ptr     web_site=WebSite::shared_new(o_site_path);
     //read filter
     WordsFilter::ptr filter=WordsFilter::shared_new();
     //load filter
     if(o_filter_path.size())
     {
-        VERBOSE("Start, loading filter file: "<<o_filter_path)
+        VERBOSE("Loading filter file: "<<o_filter_path)
         filter  =WordsFilter::shared_new(StringUtils::file_to_utf8(o_filter_path));
         //errors?
         if(filter->get_errors().size())
@@ -211,7 +211,7 @@ int main(int argc,const char** args)
         [=](const std::vector< cl_ushort >& data, size_t words,size_t page_start, size_t n_page)
         {
             //print state
-            VERBOSE("Save pages [ "<<page_start<<", "<< (page_start+n_page) << " ]");
+            VERBOSE("Start save pages [ "<<page_start<<", "<< (page_start+n_page) << " ]");
             //save
             size_t end_page=page_start+n_page;
             for(size_t p=page_start; p!=end_page; ++p)
@@ -228,6 +228,7 @@ int main(int argc,const char** args)
                 //save
                 StringUtils::string_to_file(o_reduce_path+"/reduce_map_"+std::to_string(p)+"_cl.txt", out_str.str());
             }
+            VERBOSE( "end save" )
         };
         //////////////////////////////////////////////////////////
         OpenCLInvertedIndex inverted_index;
