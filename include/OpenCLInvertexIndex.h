@@ -424,7 +424,6 @@ public:
         //-------------------------------------------------------------------------
        #if 1
         //
-       // options += " -DDEBUG " + OpenCLProgram::debug_option(m_source_path_pages);
         //load source
         std::string source_pages = StringUtils::file_to_string(m_source_path_pages);
         //program
@@ -507,7 +506,7 @@ public:
         OpenCLMemory::ptr word_buffer = iimap->create_buffer(context);
         //max size of a task
         const size_t mem_of_a_column = sizeof(cl_ushort) * iimap->real_count_row();
-        const size_t mem_max_for_task = 1024 * 1024 * 128 / m_devices.size();
+        const size_t mem_max_for_task = 1024 * 1024 * 256 / m_devices.size();
         
         //compute columns
         {

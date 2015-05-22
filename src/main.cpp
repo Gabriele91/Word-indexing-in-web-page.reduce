@@ -126,7 +126,7 @@ int main()
     MESSAGE( OpenCLInfo::to_string() );
     //test create context
     //auto platform = OpenCLInfo::get_id_platforms()[0];
-    OpenCLContext::DeviceType type = OpenCLContext::TYPE_CPU;
+    OpenCLContext::DeviceType type = OpenCLContext::TYPE_GPU;
     OpenCLContext context(type);
     auto platform = context.get_platform();
     auto device   = context.get_devices()[0];
@@ -232,7 +232,7 @@ int main()
     );
     MESSAGE( OpenCLInfo::to_string() );
     //test create context
-    OpenCLContext::DeviceType type = OpenCLContext::TYPE_ALL;
+    OpenCLContext::DeviceType type = OpenCLContext::TYPE_CPU;
     OpenCLContext context(type);
     auto platform = context.get_platform();
     //print platform
@@ -328,15 +328,13 @@ int main()
                                     }
                                 });
 
-    DEBUGCODE
-    (
-        std::stringstream out_str;
-        for(unsigned int y=0;y!=reduce_map->count_row() && *reduce_map->at(y);++y)
-        {
-            out_str << y << " : " << reduce_map->at(y) << " \n";
-        }
-        StringUtils::string_to_file("tests/reduce_word_cl.txt", out_str.str());
-    )
+
+    std::stringstream out_str;
+    for(cl_uint y=0;y!=reduce_map->real_count_row();++y)
+    {
+        out_str << y << " : " << reduce_map->at(y) << " \n";
+    }
+    StringUtils::string_to_file("tests/reduce_word_cl.txt", out_str.str());
 #endif
 
     return 0;
