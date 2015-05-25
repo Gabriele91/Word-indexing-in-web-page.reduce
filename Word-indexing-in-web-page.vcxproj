@@ -83,8 +83,9 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(ProjectDir)/dipendencies-win32/lib;$(INTELOCLSDKROOT)lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>wldap32.lib;ws2_32.lib;OpenCL.lib;html2textWin32.lib;libcurl.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>wldap32.lib;ws2_32.lib;OpenCL.lib;lua51Win32.lib;html2textWin32.lib;libcurl.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalOptions>/NODEFAULTLIB:LIBCMT.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -104,8 +105,9 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(ProjectDir)/dipendencies-win32/lib;$(INTELOCLSDKROOT)lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>wldap32.lib;ws2_32.lib;OpenCL.lib;html2textWin32_d.lib;libcurld_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>wldap32.lib;ws2_32.lib;OpenCL.lib;lua51Win32.lib;html2textWin32_d.lib;libcurld_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalOptions>/NODEFAULTLIB:LIBCMT.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -163,6 +165,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="lua-script\treccani.lua" />
     <None Include="script\debug.cl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
@@ -250,6 +253,7 @@
     <ClCompile Include="src\ParserHTML.cpp" />
     <ClCompile Include="src\StringUtils.cpp" />
     <ClCompile Include="src\Utf8LowerUpper.cpp" />
+    <ClCompile Include="src\VMlua.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\AlignedAllocator.h" />
@@ -268,6 +272,7 @@
     <ClInclude Include="include\ParserHTML.h" />
     <ClInclude Include="include\SiteMapping.h" />
     <ClInclude Include="include\StringUtils.h" />
+    <ClInclude Include="include\VMLua.h" />
     <ClInclude Include="include\WebSite.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

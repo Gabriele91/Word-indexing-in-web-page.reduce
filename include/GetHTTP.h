@@ -42,21 +42,41 @@ public:
         std::string out;
         m_content.copy_to_string(out);
         return out;
-	}
+    }
+
+    std::string to_string()
+    {
+        std::string out;
+        m_content.copy_to_string(out);
+        return out;
+    }
 
 	const CURLcode get_error() const
 	{
 		return  m_res;
 	}
 
+    std::string get_error_to_string() const
+    {
+        return curl_easy_strerror(m_res);
+    }
+
     const StreamRead& get_buffer() const
     {
         return m_content;
     }
 
+    const std::string& get_url() const
+    {
+        return m_url;
+    }
+
+    static void force_start_curl();
+
 public:
 
-    static CURL* m_curl;
+    static bool  m_init;
     CURLcode     m_res;
     StreamRead   m_content;
+    std::string  m_url;
 };

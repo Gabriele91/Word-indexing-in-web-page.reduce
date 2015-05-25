@@ -146,13 +146,89 @@ namespace StringUtils
     }
     
     // utf8 to unicode and viceversa
-    void from_utf8 (std::wstring& outwstr, const std::string& data);
+    void from_utf8(std::wstring& outwstr, const std::string& data);
     void from_utf16(std::string& outstr, const std::wstring& data);
     void iso_latin_1_to_utf8(std::string& out, const std::string& in);
     
     // upper / lower cases
     void to_lower_utf8(std::string& outstr);
     void to_upper_utf8(std::string& outstr);
-    
+
+    //read utf8
+    static size_t next_char_count_utf8(char c)
+    {
+        if ((c & 0x80) == 0)         // 0XXX XXXX
+            return 1;
+        else if ((c & 0xE0) == 0xC0) // 110X XXXX
+            return 2;
+        else if ((c & 0xF0) == 0xE0) // 1110 XXXX
+            return 3;
+        else if ((c & 0xF8) == 0xF0) // 1111 0XXX
+            return 4;
+
+        return (size_t)(c != 0);
+    }
+    static void   next_char_utf8(const char** achar)
+    {
+        (*achar) += next_char_count_utf8(*(*achar));
+    }
+    static size_t word_len_utf8(char* word)
+    {
+        //init index
+        size_t i = 0;
+        //count
+        while (!isspace(*word))
+        {
+            word += next_char_count_utf8(*word);
+            ++i;
+        }
+        //return len
+        return i;
+    }    
+    static size_t text_len_utf8(char* text)
+    {
+        //init index
+        size_t i = 0;
+        //count
+        while (*text)
+        {
+            text += next_char_count_utf8(*text);
+            ++i;
+        }
+        //return len
+        return i;
+    }
+    static unsigned short utf8_to_ushort(const char* achar)
+    {
+        unsigned short out = 0;
+        //cases
+        if (((*achar) & 0x80) == 0x00)
+        {
+            out = *achar;
+        }
+        /* XXX|0 0000 == 110|0 0000 */
+        else if ((((*achar) & 0xE0) == 0xC0))
+        {                                                    //00000
+            out = (unsigned short)((achar[0]) & 0x1F) << 6;//     XXXXX
+            out |= (unsigned short)((achar[1]) & 0x3F);     //          XXXXXX
+        }
+        /* XXXX| 0000 == 1110| 0000 */
+        else if (((*achar) & 0xF0) == 0xE0)  // 3 chars
+        {
+            out = (unsigned short)((achar[0]) & 0x0F) << 12;//XXXX
+            out |= (unsigned short)((achar[1]) & 0x3F) << 6; //    XXXXXX
+            out |= (unsigned short)((achar[2]) & 0x3F);      //          XXXXXX
+        }
+        /* XXXX 0|000 == 1111 0|000 */
+        else if (((*achar) & 0xF8) == 0xF0)  // 4 chars
+        {
+            out = (unsigned short)((achar[1]) & 0x3F) << 12;//XXXX
+            out |= (unsigned short)((achar[2]) & 0x3F) << 6; //    XXXXXX
+            out |= (unsigned short)((achar[3]) & 0x3F);      //          XXXXXX
+
+        }
+
+        return out;
+    }
 };
 

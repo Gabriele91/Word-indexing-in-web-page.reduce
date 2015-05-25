@@ -103,6 +103,11 @@ static void for_each_elements_orderedList(
     std::function<void(auto_ptr< Element >& element)> callback
     );
 
+static void for_each_elements_definitionList(
+    DefinitionList* element,
+    std::function<void(auto_ptr< Element >& element)> callback
+    ); 
+
 static void for_each_elements_table(
     Table* element,
     std::function<void(auto_ptr< Element >& element)> callback
@@ -140,6 +145,7 @@ static void for_each_elements_list(
         if      (tag == "Table")          for_each_elements_table((Table*)it.get(), callback);
         else if (tag == "OrderedList")    for_each_elements_orderedList((OrderedList*)it.get(), callback);
         else if (tag == "UnorderedList")  for_each_elements_unorderedList((UnorderedList*)it.get(), callback);
+        else if (tag == "DefinitionList") for_each_elements_definitionList((DefinitionList*)it.get(), callback);
         //ric
         if (it->get_content())            for_each_elements_list(it->get_content(), callback);
     };
@@ -179,6 +185,22 @@ static void for_each_elements_orderedList(
     };
 }
 
+static void for_each_elements_definitionList(
+    DefinitionList* element,
+    std::function<void(auto_ptr< Element >& element)> callback
+    )
+{
+    //recursive call
+    if (element->items.get())
+        for (auto& item : *(element->items))
+        {
+            //get list of childs
+            auto elements = item->get_content();
+            //recursive
+            if (elements)
+                for_each_elements_list(elements, callback);
+        };
+}
 static void for_each_elements_table(
     Table* element,
     std::function<void(auto_ptr< Element >& element)> callback
@@ -283,4 +305,6 @@ ParserHTML::ParserHTML(const GetHTTP& webpage)
         for_each_elements((Document*)&document, get_link);
     });
     parser.yyparse();
+    //save url
+    m_url = webpage.get_url();
 }

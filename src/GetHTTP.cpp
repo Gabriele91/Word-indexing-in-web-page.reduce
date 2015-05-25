@@ -1,7 +1,7 @@
 #include <GetHTTP.h>
 #include <StringUtils.h>
 //init curl
-CURL* GetHTTP::m_curl = nullptr;
+bool GetHTTP::m_init = false;
 
 //append
 void GetHTTP::StreamRead::append(void* ptr, size_t add_size)
@@ -38,19 +38,23 @@ static size_t download_content(void* ptr, size_t size, size_t nmemb, GetHTTP::St
     //return size
 	return c_size;
 }
+void GetHTTP::force_start_curl()
+{
+    //init curl
+    if NOT(m_init)
+    {
+        curl_global_init(CURL_GLOBAL_ALL);
+        m_init=true;
+    }
+}
 
 GetHTTP::GetHTTP(const std::string& url)
 {
 	//init curl
-	if NOT(m_curl)
-	{
-		m_curl = curl_easy_init();
-		assert(m_curl);
-		atexit([]()
-		{
-			curl_easy_cleanup(m_curl);
-		});
-	}
+    force_start_curl();
+    //thread safe
+    CURL* m_curl = curl_easy_init();
+    assert(m_curl);
 	// download page
 	curl_easy_setopt(m_curl, CURLOPT_URL, url.c_str());
 	curl_easy_setopt(m_curl, CURLOPT_FOLLOWLOCATION, 1L);
@@ -63,4 +67,8 @@ GetHTTP::GetHTTP(const std::string& url)
 	{
 		MESSAGE("curl_easy_perform() failed: " << curl_easy_strerror(m_res));
 	}
+    //clean
+    curl_easy_cleanup(m_curl);
+    //save url
+    m_url = url;
 }

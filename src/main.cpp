@@ -16,9 +16,9 @@
 #include <SiteMapping.h>
 #include <InvertedIndex.h>
 #include <OpenCLInvertexIndex.h>
+#include <VMLua.h>
 
 #define VERBOSE(x) if(verbose) { MESSAGE(x); }
-
 int main(int argc,const char** args)
 {
     //no args
@@ -33,6 +33,7 @@ int main(int argc,const char** args)
     for(size_t i=1;i!=argc;++i) v_args[i-1]=args[i];
     //options
     std::string o_site_path;
+    std::string o_lua_path;
     std::string o_mapping_path;
     std::string o_reduce_path;
     std::string o_reduce_cpu_path;
@@ -47,6 +48,7 @@ int main(int argc,const char** args)
             MESSAGE( name << " [options]" );
             MESSAGE( "Options:" );
             MESSAGE( "\t--input-site/-is <path>  input site file" );
+            MESSAGE( "\t--input-lua/-il <path>  input lua download script" );
             MESSAGE( "\t--ouput-mapping/-om <path>  directory of ouput of mapping" );
             MESSAGE( "\t--ouput-reduce/-or <path> directory of ouput of reduce" );
             MESSAGE( "\t--ouput-reduce-cpu/-orc <path> directory of ouput of reduce (CPU)" );
@@ -83,9 +85,13 @@ int main(int argc,const char** args)
                 }
                 else if( (arg+1)!= v_args.size() )
                 {
-                    if( v_args[arg]=="-is" || v_args[arg]=="--input-site" )
+                    if (v_args[arg] == "-is" || v_args[arg] == "--input-site")
                     {
-                        o_site_path=v_args[arg+1]; ++arg;
+                        o_site_path = v_args[arg + 1]; ++arg;
+                    }
+                    else if (v_args[arg] == "-il" || v_args[arg] == "--input-lua")
+                    {
+                        o_lua_path = v_args[arg + 1]; ++arg;
                     }
                     else if( v_args[arg]=="-om" || v_args[arg]=="--ouput-mapping" )
                     {
@@ -116,12 +122,29 @@ int main(int argc,const char** args)
                 }
             }
         }
-        //
-        if( !o_site_path.size() || (!o_mapping_path.size() && !o_reduce_path.size() && !o_reduce_cpu_path.size()) )
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //not execute reduce/mapping
+    bool  not_exe_rm = !o_site_path.size() || (!o_mapping_path.size() && !o_reduce_path.size() && !o_reduce_cpu_path.size());
+    //not execute lua script
+    bool  not_exe_lua = !o_lua_path.size();
+    //error...
+    if (not_exe_rm && not_exe_lua)
+    {
+        MESSAGE("Invalid input, required site path and a ouput and/or script input");
+        return -1;
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    if (o_lua_path.size())
+    {
+        VERBOSE("Execute lua file: " << o_lua_path)
+        VMLua lua;
+        if (!lua.execute_from_file(o_lua_path))
         {
-            MESSAGE( "Invalid input, required site path and a ouput" );
-            return -1;
+            MESSAGE("Lua errors:\n" << lua.get_error());
         }
+        //no reduce mapping?
+        if (not_exe_rm) return 0;
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     VERBOSE("Loading site file: "<<o_site_path)

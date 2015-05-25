@@ -13,6 +13,9 @@
       <UniqueIdentifier>{D011BB44-1BF7-4113-997B-A081035B40D8}</UniqueIdentifier>
       <Extensions>cl</Extensions>
     </Filter>
+    <Filter Include="Lua">
+      <UniqueIdentifier>{b95e0a08-0f1a-401c-b8e3-296c7c445dfd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AlignedAllocator.cpp">
@@ -37,6 +40,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Utf8LowerUpper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VMlua.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -92,6 +98,9 @@
     <ClInclude Include="include\WebSite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\VMLua.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="script\debug.cl">
@@ -112,10 +121,11 @@
     <None Include="script\inverted_index_words.cl">
       <Filter>OpenCL Files</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Intel_OpenCL_Build_Rules Include="script\inverted_index_pages.cl">
+    <None Include="script\inverted_index_pages.cl">
       <Filter>OpenCL Files</Filter>
-    </Intel_OpenCL_Build_Rules>
+    </None>
+    <None Include="lua-script\treccani.lua">
+      <Filter>Lua</Filter>
+    </None>
   </ItemGroup>
 </Project>
