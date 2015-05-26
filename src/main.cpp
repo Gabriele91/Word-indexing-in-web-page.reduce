@@ -38,7 +38,8 @@ int main(int argc,const char** args)
     std::string o_reduce_path;
     std::string o_reduce_cpu_path;
     std::string o_filter_path;
-    bool verbose = false;
+    bool verbose  = false;
+    bool split    = false;
     OpenCLContext::DeviceType type = OpenCLContext::TYPE_ALL;
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //ARGS PARSER
@@ -51,10 +52,11 @@ int main(int argc,const char** args)
             MESSAGE( "\t--input-lua/-il <path>  input lua download script" );
             MESSAGE( "\t--ouput-mapping/-om <path>  directory of ouput of mapping" );
             MESSAGE( "\t--ouput-reduce/-or <path> directory of ouput of reduce" );
-            MESSAGE( "\t--ouput-reduce-cpu/-orc <path> directory of ouput of reduce (CPU)" );
+            MESSAGE( "\t--ouput-reduce-cpu/-orc <path> directory of ouput of reduce (no OCL)" );
             MESSAGE( "\t--input-filter/-if <path> input filter file" );
-            MESSAGE( "\t--verbose/-v verbose mode [default: false]" );
-            MESSAGE( "\t--cpu/--gpu/--all/-c/-g/-a select type of devices [default: all]" );
+            MESSAGE( "\t--verbose/-v verbose mode [default: false]");
+            MESSAGE( "\t--cpu/--gpu/--all/-c/-g/-a select type of devices [default: all]");
+            MESSAGE( "\t--split/--s split the reduce map (OCL)" );
             return 0;
         }
         else if(v_args.size()==1)
@@ -67,9 +69,13 @@ int main(int argc,const char** args)
             //for all
             for(size_t arg=0; arg!= v_args.size() ; ++arg)
             {
-                if( v_args[arg]=="-v" || v_args[arg]=="--verbose" )
+                if (v_args[arg] == "-v" || v_args[arg] == "--verbose")
                 {
-                    verbose=true;
+                    verbose = true;
+                }
+                else if (v_args[arg] == "-s" || v_args[arg] == "--split")
+                {
+                    split = true;
                 }
                 else if( v_args[arg]=="-a" || v_args[arg]=="--all" )
                 {
@@ -230,36 +236,71 @@ int main(int argc,const char** args)
         //////////////////////////////////////////////////////////
         WordMapInvertedIndex::InvertedIndexMap::ptr reduce_map;
         //////////////////////////////////////////////////////////
-        auto save_function=
-        [=](const std::vector< cl_ushort >& data, size_t words,size_t page_start, size_t n_page)
+        auto save_function =
+        [=](const std::vector< cl_ushort >& data, size_t words, size_t page_start, size_t n_page)
         {
             //print state
-            VERBOSE("Start save pages [ "<<page_start<<", "<< (page_start+n_page) << " ]");
+            VERBOSE("Start save pages [ " << page_start << ", " << (page_start + n_page) << " ]");
             //save
-            size_t end_page=page_start+n_page;
-            for(size_t p=page_start; p!=end_page; ++p)
+            size_t end_page = page_start + n_page;
+            for (size_t p = page_start; p != end_page; ++p)
             {
                 //alloc
-                size_t w_start=words*(p-page_start);
-                size_t w_end  =w_start + words;
+                size_t w_start = words*(p - page_start);
+                size_t w_end = w_start + words;
                 std::stringstream out_str;
                 //write
-                for(size_t v=w_start; v!=w_end && v!=data.size() ;++v)
+                for (size_t v = w_start; v != w_end && v != data.size(); ++v)
                 {
-                    out_str << (v-w_start) << " : " << data[v] << "\n";
+                    out_str << (v - w_start) << " : " << data[v] << "\n";
                 }
                 //save
-                StringUtils::string_to_file(o_reduce_path+"/reduce_map_"+std::to_string(p)+"_cl.txt", out_str.str());
+                StringUtils::string_to_file(o_reduce_path + "/reduce_map_" + std::to_string(p) + "_cl.txt", out_str.str());
             }
-            VERBOSE( "end save" )
+            VERBOSE("end save")
         };
+        auto save_function_compress =
+        [=](const std::vector< cl_ushort >& data, size_t words, size_t page_start, size_t n_page)
+        {
+            //print state
+            VERBOSE("Start save pages [ " << page_start << ", " << (page_start + n_page) << " ]");
+            //save
+            size_t end_page = page_start + n_page;
+            //alloc
+            std::stringstream out_str;
+            //write
+            for (size_t v = 0; v != words && v != data.size(); ++v)
+            {
+                out_str << v << " : ";
+                for (size_t p = 0; p != n_page; ++p)
+                {
+                    out_str << data[v + words*p] << ' ';
+                }
+                out_str << '\n';
+            }
+            //save
+            StringUtils::string_to_file(o_reduce_path +
+                                        "/reduce_map_[ " + 
+                                        std::to_string(page_start) +
+                                        " - " + 
+                                        std::to_string(end_page) +
+                                        " ]_cl.txt",
+                                        out_str.str());
+            VERBOSE("end save")
+        };
+        //select function
+        std::function<void(const std::vector< cl_ushort >& data, size_t words, size_t page_start, size_t n_page)>
+        save_select_function = nullptr;
+        //init select function
+        if (split) save_select_function = save_function;
+        else       save_select_function = save_function_compress;
         //////////////////////////////////////////////////////////
         OpenCLInvertedIndex inverted_index;
         inverted_index.init(context);
         inverted_index.execute_task(context,
                                     map.get_maps(),
                                     reduce_map,
-                                    save_function);
+                                    save_select_function);
         //////////////////////////////////////////////////////////
         std::stringstream out_str;
         for(cl_uint y=0;y!=reduce_map->real_count_row();++y)
