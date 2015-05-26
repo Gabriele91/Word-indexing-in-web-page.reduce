@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E00E96C41B14D9C400BB6073 /* VMlua.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E00E96C31B14D9C400BB6073 /* VMlua.cpp */; };
+		E00E96C61B14D9E300BB6073 /* libluajit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E00E96C51B14D9E300BB6073 /* libluajit.a */; };
 		E047509A1AECD03500AA0825 /* StringUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E04750991AECD03500AA0825 /* StringUtils.cpp */; };
 		E053FB011AD7DAC4000F2C3E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E053FB001AD7DAC4000F2C3E /* main.cpp */; };
 		E053FB071AD7DAEE000F2C3E /* OpenCL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E053FB061AD7DAEE000F2C3E /* OpenCL.framework */; };
@@ -33,6 +35,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E00E96C31B14D9C400BB6073 /* VMlua.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VMlua.cpp; sourceTree = "<group>"; };
+		E00E96C51B14D9E300BB6073 /* libluajit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libluajit.a; sourceTree = "<group>"; };
 		E00FF3C71AED275900EA22DC /* SiteMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SiteMapping.h; sourceTree = "<group>"; };
 		E00FF3C81AED275900EA22DC /* WebSite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebSite.h; sourceTree = "<group>"; };
 		E02AEB181AF2562B00C15656 /* InvertedIndex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InvertedIndex.h; sourceTree = "<group>"; };
@@ -89,6 +93,7 @@
 			files = (
 				E065F9B41AE2E50A00B942BE /* libhtml2text-lib.a in Frameworks */,
 				E0FD6A0C1AE1075F00574083 /* libcurl.dylib in Frameworks */,
+				E00E96C61B14D9E300BB6073 /* libluajit.a in Frameworks */,
 				E053FB071AD7DAEE000F2C3E /* OpenCL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -119,6 +124,7 @@
 		E053FAFF1AD7DAC4000F2C3E /* src */ = {
 			isa = PBXGroup;
 			children = (
+				E00E96C31B14D9C400BB6073 /* VMlua.cpp */,
 				E04750991AECD03500AA0825 /* StringUtils.cpp */,
 				E065F9B51AE2E58800B942BE /* ParserHTML.cpp */,
 				E0FD6A0D1AE112D100574083 /* GetHTTP.cpp */,
@@ -202,6 +208,7 @@
 		E065F9B21AE2E50A00B942BE /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				E00E96C51B14D9E300BB6073 /* libluajit.a */,
 				E065F9B31AE2E50A00B942BE /* libhtml2text-lib.a */,
 			);
 			path = lib;
@@ -277,6 +284,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E00E96C41B14D9C400BB6073 /* VMlua.cpp in Sources */,
 				E047509A1AECD03500AA0825 /* StringUtils.cpp in Sources */,
 				E0FD6A0E1AE112D100574083 /* GetHTTP.cpp in Sources */,
 				E08BFC881AF0CD260016E290 /* AlignedAllocator.cpp in Sources */,
