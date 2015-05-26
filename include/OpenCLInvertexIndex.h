@@ -300,7 +300,7 @@ public:
         if (m_value.size() != iimap->real_count_row()) m_value.resize(iimap->real_count_row()*m_count_maps);
         std::memset(m_value.data(), 0, m_value.size()*sizeof(cl_ushort));
         //create buffer
-        m_cl_value= context.create_buffer(OpenCLMemory::READ_WRITE | OpenCLMemory::USE_HOST_PTR, m_value.size(), m_value.data());
+        m_cl_value = context.create_buffer(OpenCLMemory::READ_WRITE | OpenCLMemory::USE_HOST_PTR, m_value.size()*sizeof(cl_ushort), m_value.data());
         m_cl_info = context.create_buffer(OpenCLMemory::READ_WRITE | OpenCLMemory::USE_HOST_PTR, m_info.size() * sizeof(MapsInfo), m_info.data());
         m_cl_maps = context.create_buffer(OpenCLMemory::READ_ONLY, maps_size, NULL);
         //write all maps
@@ -353,7 +353,7 @@ public:
     
     const std::vector< cl_ushort >& read_vector(OpenCLQueue::ptr  queue)
     {
-        queue->read_buffer(*m_cl_value, true, 0, m_value.size(), m_value.data());
+        queue->read_buffer(*m_cl_value, true, 0, m_value.size()*sizeof(cl_ushort), m_value.data());
         return m_value;
     }
     
@@ -489,7 +489,7 @@ public:
                 size_t work = std::min(size - i_done, i_size);
                 //init task
                 auto iimap = WordMapInvertedIndex::shared_new();
-                iimap->init(context, queue, 0, work, word_len, maps, last);
+                iimap->init(context, queue, i_done, work + i_done, word_len, maps, last);
                 iimap->execute_task(queue, m_kernel_words);
                 //wait
                 queue->flush();
