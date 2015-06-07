@@ -58,16 +58,14 @@ kernel void inverted_index_words
                            ADDSQ  char*      raw_info,
                            ADDSQ  char*      raw_maps,
                            ADDSQ  char*      raw_out_map,
-                           //value 
-                           read_only  const  uint      n_maps,
-                           read_only  const  uint      word_capacity,
-                           read_only  const  uint      cout_rows)
+                           //value
+                           ADDSQ  uint*      raw_out_info)
 {
     //get global id
     unsigned int g_id     = get_global_id(0);
     //get map
     ADDSQ MapsInfo*  maps_info = (ADDSQ MapsInfo*)(raw_info + sizeof(MapsInfo)*g_id);
-    ADDSQ Row*       page_map = (ADDSQ Row*)      (raw_maps + maps_info->m_offset);
+    ADDSQ char*      page_map  = (ADDSQ char*)    (raw_maps + maps_info->m_offset);
 
     CPU(
         printf("id %u, size row %u, n rows %u, offset %u, page %u\n", 
@@ -83,9 +81,9 @@ kernel void inverted_index_words
               maps_info->m_size,
               maps_info->m_row,
               page_map,
-              //ouput
-              word_capacity,
-              cout_rows,
+              //ouput          //n_maps
+              raw_out_info[1], //word_capacity,
+              raw_out_info[2], //cout_rows,
               raw_out_map
               );
     

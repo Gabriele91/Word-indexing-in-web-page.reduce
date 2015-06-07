@@ -21,6 +21,7 @@ void add_a_map(
                const uint    page_map_rows_size,
                ADDSQ char*   page_map,
                //input words
+               const  uint   n_pages,
                const  uint   word_capacity,
                const  uint   count_rows,
                const  uint   page,
@@ -34,15 +35,15 @@ void add_a_map(
     //all word of map
     for(i=0;i!=page_map_rows;++i)
     {
+        ADDSQ Row*    row    = get_row(page_map_rows_size, page_map, i);
         //search into big map
         for(r=0; r!=count_rows; ++r)
         {
             ADDSQ char*   word   = (ADDSQ char*)   (words_map + word_capacity*r);
-            ADDSQ Row*    row    = get_row(page_map_rows_size, page_map, i);
             //compare word
             if (compare_word(word, row->m_word))
             {
-                out_value[r + page*count_rows] = row->m_count;
+                out_value[r*n_pages + page] = row->m_count;
                 break;
             }
         }
@@ -55,17 +56,14 @@ kernel void inverted_index_pages
                            ADDSQ  char*        raw_maps,
                            ADDSQ  char*        words_map,
                            ADDSQ  ushort*      out_map,
-                           //value 
-                           read_only  const  uint      n_maps,
-                           read_only  const  uint      start_map,
-                           read_only  const  uint      word_capacity,
-                           read_only  const  uint      cout_rows)
+                           //value info
+                           ADDSQ  uint*        raw_out_info)
 {
     //get global id
     unsigned int g_id     = get_global_id(0);
     //get map
     ADDSQ MapsInfo*  maps_info = (ADDSQ MapsInfo*)(raw_info + sizeof(MapsInfo)*g_id);
-    ADDSQ Row*       page_map  = (ADDSQ Row*)      (raw_maps + maps_info->m_offset);
+    ADDSQ char*      page_map  = (ADDSQ char*)    (raw_maps + maps_info->m_offset);
 
     CPU(
         printf("id %u, size row %u, n rows %u, offset %u, page %u ||  "
@@ -75,10 +73,10 @@ kernel void inverted_index_pages
                 maps_info->m_size,
                 maps_info->m_offset,
                 maps_info->m_page,
-                n_maps,
-                start_map,
-                word_capacity,
-                cout_rows
+                raw_out_info[0], //n_maps,
+                raw_out_info[1], //start_map,
+                raw_out_info[2], //word_capacity,
+                raw_out_info[3]  //cout_rows
                 );
     )
     //add map to big map
@@ -87,9 +85,10 @@ kernel void inverted_index_pages
               maps_info->m_row,
               page_map,
               //input words
-              word_capacity,
-              cout_rows,
-              maps_info->m_page - start_map,
+              raw_out_info[0],                     //n_maps
+              raw_out_info[2],                     //word_capacity
+              raw_out_info[3],                     //cout_rows
+              maps_info->m_page - raw_out_info[1], //start_map
               words_map,
               //ouput
               out_map

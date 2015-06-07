@@ -141,6 +141,7 @@ public:
             m_iimap->m_count_row += maps[i]->size();
             //size of maps
             maps_size            += maps[i]->byte_size();
+            //assert(maps[i]->byte_size());
         }
         //alloc buffer
         if NOT(last_iimap)
@@ -164,9 +165,9 @@ public:
                          m_iimap->m_bytes.size()-last_iimap->m_bytes.size() );
         }
         //create buffer
-        m_cl_info = context.create_buffer(OpenCLMemory::READ_WRITE | OpenCLMemory::USE_HOST_PTR, m_info.size() * sizeof(MapsInfo), m_info.data());
-        m_cl_res  = context.create_buffer(OpenCLMemory::READ_WRITE | OpenCLMemory::USE_HOST_PTR, m_iimap->m_bytes.size(), m_iimap->m_bytes.data());
-        m_cl_maps = context.create_buffer(OpenCLMemory::READ_ONLY, maps_size, NULL);
+        m_cl_info = context.create_buffer(OpenCLMemory::READ_WRITE | OpenCLMemory::COPY_HOST_PTR, m_info.size() * sizeof(MapsInfo), m_info.data());
+        m_cl_res  = context.create_buffer(OpenCLMemory::READ_WRITE | OpenCLMemory::COPY_HOST_PTR, m_iimap->m_bytes.size(), m_iimap->m_bytes.data());
+        m_cl_maps = context.create_buffer(OpenCLMemory::READ_WRITE, maps_size, NULL);
         //write all maps
         maps_size=0;
         //mapping
@@ -179,54 +180,26 @@ public:
                                 maps[i]->data());
             maps_size+=maps[i]->byte_size();
         }
+        //params
+        m_args[0] = (cl_uint)m_iimap->count_maps();
+        m_args[1] = (cl_uint)m_iimap->word_capacity();
+        m_args[2] = (cl_uint)m_iimap->count_row();
+        m_cl_args  = context.create_buffer(OpenCLMemory::READ_WRITE | OpenCLMemory::COPY_HOST_PTR,sizeof(cl_uint)*3,m_args);
+        //send values
+        queue->flush();
     }
+
     
-    void execute_task( OpenCLQueue::ptr  queue,
-                       OpenCLKernel::ptr kernel,
-                       cl_event&& task_event)
-    {
-        const size_t cl_local_work_size = 1;
-        const size_t cl_global_work_size = m_iimap->count_maps();
-        //count maps
-        cl_uint n_maps      =(cl_uint)m_iimap->count_maps();
-        cl_uint word_len    =(cl_uint)m_iimap->word_capacity();
-        cl_uint count_rows  =(cl_uint)m_iimap->count_row();
-        //
-        kernel->set_arg(0, *m_cl_info);
-        kernel->set_arg(1, *m_cl_maps);
-        kernel->set_arg(2, *m_cl_res);
-        //
-        kernel->set_arg_value(3, n_maps);
-        kernel->set_arg_value(4, word_len);
-        kernel->set_arg_value(5, count_rows);
-        //ouput params
-        ASSERTCL_MSG(
-        queue->enqueue_ndrange_kernel(*kernel,
-                                      1,
-                                      0,
-                                      &cl_global_work_size,
-                                      &cl_local_work_size,
-                                      0,
-                                      NULL,
-                                      &task_event), "Error: Failed to execute");
-    }
     void execute_task(OpenCLQueue::ptr  queue,
                       OpenCLKernel::ptr kernel)
     {
         const size_t cl_local_work_size = 1;
         const size_t cl_global_work_size = m_iimap->count_maps();
-        //count maps
-        cl_uint n_maps = (cl_uint)m_iimap->count_maps();
-        cl_uint word_len = (cl_uint)m_iimap->word_capacity();
-        cl_uint count_rows = (cl_uint)m_iimap->count_row();
         //
-        kernel->set_arg(0, *m_cl_info);
-        kernel->set_arg(1, *m_cl_maps);
-        kernel->set_arg(2, *m_cl_res);
-        //
-        kernel->set_arg_value(3, n_maps);
-        kernel->set_arg_value(4, word_len);
-        kernel->set_arg_value(5, count_rows);
+        ASSERTCL(  kernel->set_arg(0, *m_cl_info) );
+        ASSERTCL(  kernel->set_arg(1, *m_cl_maps) );
+        ASSERTCL(  kernel->set_arg(2, *m_cl_res)  );
+        ASSERTCL(  kernel->set_arg(3, *m_cl_args)  );
         //ouput params
         ASSERTCL_MSG(
                      queue->enqueue_ndrange_kernel(*kernel,
@@ -253,6 +226,9 @@ protected:
     OpenCLMemory::ptr m_cl_maps;
     OpenCLMemory::ptr m_cl_info;
     OpenCLMemory::ptr m_cl_res;
+    OpenCLMemory::ptr m_cl_args;
+    //kernel info
+    cl_uint m_args[3]={ 0,0,0 };
     //info map
     InvertedIndexMap::ptr m_iimap;
     //last vector of info
@@ -289,20 +265,21 @@ public:
         //mapping
         for(size_t i=start; i!=end; ++i)
         {
-            m_info[i - start].m_row = (cl_ushort)maps[i]->row_size();//size of a row
-            m_info[i - start].m_size = (cl_uint)maps[i]->size();    //count rows
+            m_info[i - start].m_row    = (cl_ushort)maps[i]->row_size();//size of a row
+            m_info[i - start].m_size   = (cl_uint)maps[i]->size();    //count rows
             m_info[i - start].m_offset = (cl_uint)maps_size;
-            m_info[i - start].m_page = (cl_uint)i;
+            m_info[i - start].m_page   = (cl_uint)i;
             //size of maps
             maps_size            += maps[i]->byte_size();
+            //assert(maps[i]->byte_size());
         }
         //alloc buffer
-        if (m_value.size() != iimap->real_count_row()) m_value.resize(iimap->real_count_row()*m_count_maps);
+        m_value.resize(iimap->real_count_row()*m_count_maps);
         std::memset(m_value.data(), 0, m_value.size()*sizeof(cl_ushort));
         //create buffer
-        m_cl_value = context.create_buffer(OpenCLMemory::READ_WRITE | OpenCLMemory::USE_HOST_PTR, m_value.size()*sizeof(cl_ushort), m_value.data());
-        m_cl_info = context.create_buffer(OpenCLMemory::READ_WRITE | OpenCLMemory::USE_HOST_PTR, m_info.size() * sizeof(MapsInfo), m_info.data());
-        m_cl_maps = context.create_buffer(OpenCLMemory::READ_ONLY, maps_size, NULL);
+        m_cl_value = context.create_buffer(OpenCLMemory::READ_WRITE | OpenCLMemory::COPY_HOST_PTR, m_value.size()* sizeof(cl_ushort), m_value.data());
+        m_cl_info  = context.create_buffer(OpenCLMemory::READ_WRITE | OpenCLMemory::COPY_HOST_PTR, m_info.size() * sizeof(MapsInfo),  m_info.data());
+        m_cl_maps  = context.create_buffer(OpenCLMemory::READ_WRITE, maps_size, NULL);
         //write all maps
         maps_size=0;
         //mapping
@@ -315,30 +292,29 @@ public:
                                 maps[i]->data());
             maps_size+=maps[i]->byte_size();
         }
+        //params
+        m_args[0] = (cl_uint)m_count_maps;
+        m_args[1] = (cl_uint)m_page_start;
+        m_args[2] = (cl_uint)iimap->word_capacity();
+        m_args[3] = (cl_uint)iimap->real_count_row();
+        m_cl_args = context.create_buffer(OpenCLMemory::READ_WRITE | OpenCLMemory::COPY_HOST_PTR,sizeof(cl_uint)*4,m_args);
+        //send values
+        queue->flush();
     }
     
     void execute_task(OpenCLQueue::ptr  queue,
                       OpenCLKernel::ptr kernel,
                       OpenCLMemory::ptr cl_words,
-                      WordMapInvertedIndex::InvertedIndexMap::ptr& iimap,
                       cl_event&& this_event)
     {
         const size_t cl_local_work_size = 1;
         const size_t cl_global_work_size = m_count_maps;
-        //count maps
-        cl_uint n_maps     = (cl_uint)iimap->count_maps();
-        cl_uint word_len   = (cl_uint)iimap->word_capacity();
-        cl_uint count_rows = (cl_uint)iimap->real_count_row();
         //
-        kernel->set_arg(0, *m_cl_info);
-        kernel->set_arg(1, *m_cl_maps);
-        kernel->set_arg(2, *cl_words);
-        kernel->set_arg(3, *m_cl_value);
-        //
-        kernel->set_arg_value(4, n_maps);
-        kernel->set_arg_value(5, m_page_start);
-        kernel->set_arg_value(6, word_len);
-        kernel->set_arg_value(7, count_rows);
+        ASSERTCL( kernel->set_arg(0, *m_cl_info) );
+        ASSERTCL( kernel->set_arg(1, *m_cl_maps) );
+        ASSERTCL( kernel->set_arg(2, *cl_words)  );
+        ASSERTCL( kernel->set_arg(3, *m_cl_value));
+        ASSERTCL( kernel->set_arg(4, *m_cl_args));
         //ouput params
         ASSERTCL_MSG(queue->enqueue_ndrange_kernel(*kernel,
                                                    1,
@@ -367,6 +343,9 @@ protected:
     OpenCLMemory::ptr m_cl_maps;
     OpenCLMemory::ptr m_cl_info;
     OpenCLMemory::ptr m_cl_value;
+    OpenCLMemory::ptr m_cl_args;
+    //kernel info
+    cl_uint m_args[4]={ 0,0,0,0 };
     //last vector of info
     std::vector < MapsInfo > m_info;
     //vector of values
@@ -461,7 +440,7 @@ public:
 
         //info
         size_t word_len  = 0;
-        size_t word_count= 0;
+        size_t word_count = 0;
         //calc
         for(const auto& map: maps)
         {
@@ -478,26 +457,49 @@ public:
         {
             WordMapInvertedIndex::InvertedIndexMap::ptr last;
             //device id
-            size_t size = maps.size();
-            size_t i_device = 0;
-            size_t i_done   =0;
+            size_t i_device = m_devices.size()-1;
             size_t i_size = m_kernel_words->get_work_goup_max_size(m_devices[i_device]);
-            //queue
-            OpenCLQueue::ptr queue = context.create_queue(m_devices[i_device], NULL);
-            while (i_done != size)
+            //compute size task
+            size_t mem_list_word_size = word_len * word_count;
+            size_t mem_max_task_word_size = 1048576 * 256 - mem_list_word_size;
+            size_t tmp_size_task = 0;
+            size_t tmp_index_map = 0;
+            std::vector< size_t > size_tasks;
+            //add start task
+            size_tasks.push_back(0);
+            //compute tasks
+            for (const auto& map : maps)
             {
-                size_t work = std::min(size - i_done, i_size);
+                //increment count
+                ++tmp_index_map;
+                //compute size task
+                bool task_byte_size  = tmp_size_task + map->byte_size() <= mem_max_task_word_size;
+                bool task_count_size = tmp_index_map - size_tasks[size_tasks.size() - 1] < i_size;
+                if (task_byte_size && task_count_size)
+                {
+                    tmp_size_task += map->byte_size();
+                }
+                else
+                {
+                    tmp_size_task = 0;
+                    size_tasks.push_back(tmp_index_map);
+                }
+            }
+            //add end task
+            size_tasks.push_back(tmp_index_map);
+            //tasks
+            for (size_t i = 1; i != size_tasks.size(); ++i)
+            {
                 //init task
+                OpenCLQueue::ptr queue = context.create_queue(m_devices[i_device], NULL);
                 auto iimap = WordMapInvertedIndex::shared_new();
-                iimap->init(context, queue, i_done, work + i_done, word_len, maps, last);
+                iimap->init(context, queue, size_tasks[i - 1], size_tasks[i], word_len, maps, last);
+                //exec
                 iimap->execute_task(queue, m_kernel_words);
-                //wait
-                queue->flush();
-                queue->finish();
                 //read
                 last = iimap->read_map(queue);
-                //done
-                i_done += work;
+                //end
+                queue->finish();
             }
             //save iimap
             iimap=last;
@@ -506,7 +508,7 @@ public:
         OpenCLMemory::ptr word_buffer = iimap->create_buffer(context);
         //max size of a task
         const size_t mem_of_a_column = sizeof(cl_ushort) * iimap->real_count_row();
-        const size_t mem_max_for_task = 1024 * 1024 * 256 / m_devices.size();
+        const size_t mem_max_for_task = 1024 * 1024 * 512 / m_devices.size();
         
         //compute columns
         {
@@ -577,16 +579,22 @@ public:
                         //release event
                         if(events[i])
                         {
-                            clReleaseEvent(events[i]);
-                            events[i]=0;
-                            done += words_size[i];
                             //end
-                            ASSERTCL( queues[i]->finish() );
+                            ASSERTCL( clWaitForEvents(1, &events[i]) );
+                            //release
+                            clReleaseEvent(events[i]);
+                            events[i] = NULL;
+                            //wait
+                            ASSERTCL( queues[i]->flush() );
                             //callback
                             cb_save_fun(v_cmii[i]->read_vector(queues[i]),
                                        (size_t)iimap->real_count_row(),
                                        (size_t)page_start[i],
-                                       (size_t)words_size[i]);
+                                        (size_t)words_size[i]);
+                            //add
+                            done += words_size[i];
+                            //end
+                            ASSERTCL( queues[i]->finish() );
                             //new queue
                             queues[i]=context.create_queue(m_devices[i], NULL);
                         }
@@ -611,7 +619,6 @@ public:
                             v_cmii[i]->execute_task(queues[i],
                                                     m_kernel_pages,
                                                     word_buffer,
-                                                    iimap,
                                                     std::move(events[i]));
                             //flush
                             queues[i]->flush();

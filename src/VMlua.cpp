@@ -19,15 +19,23 @@ public:
     {
         site = WebSite::shared_new();
     }
-
+    
     void add(const ParserHTML& parse)
     {
         auto page = WebPage::shared_new();
         page->set_url(parse.get_url());
         page->set_text_raw(parse.get_text());
         mutex.lock();
-            site->add(page);
+        site->add(page);
         mutex.unlock();
+    }
+    
+    void unsafe_add(const ParserHTML& parse)
+    {
+        auto page = WebPage::shared_new();
+        page->set_url(parse.get_url());
+        page->set_text_raw(parse.get_text());
+        site->add(page);
     }
 
     size_t size() const
@@ -44,6 +52,16 @@ public:
     {
         mutex.lock();
         site->save_to_file(path);
+        mutex.unlock();
+    }
+    
+    void lock() const
+    {
+        mutex.lock();
+    }
+    
+    void unloack() const
+    {
         mutex.unlock();
     }
 };
@@ -83,8 +101,11 @@ public:
         auto  web_url = luabridge::Stack<std::string>::get(state, 3);
         ThreadPool::enqueue([=]()
         {
+            //parallel download
             GetHTTP site(web_url);
+            //parsing
             ParserHTML html(site);
+            //save
             web_site->add(html);
         });
         return 0;
@@ -102,7 +123,7 @@ VMLua::VMLua()
     m_state = lua_open();
     luaopen_base(m_state);             /* opens the basic library */
     luaopen_table(m_state);            /* opens the table library */
-    luaopen_io(m_state);               /* opens the I/O library */
+  //luaopen_io(m_state);               /* opens the I/O library */
     luaopen_string(m_state);           /* opens the string lib. */
     luaopen_math(m_state);             /* opens the math lib. */
     //init curl

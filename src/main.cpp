@@ -241,18 +241,14 @@ int main(int argc,const char** args)
         {
             //print state
             VERBOSE("Start save pages [ " << page_start << ", " << (page_start + n_page) << " ]");
-            //save
-            size_t end_page = page_start + n_page;
-            for (size_t p = page_start; p != end_page; ++p)
+            //alloc
+            std::stringstream out_str;
+            for (size_t p = 0; p != n_page; ++p)
             {
-                //alloc
-                size_t w_start = words*(p - page_start);
-                size_t w_end = w_start + words;
-                std::stringstream out_str;
                 //write
-                for (size_t v = w_start; v != w_end && v != data.size(); ++v)
+                for (size_t v = 0; v != words && v != data.size(); ++v)
                 {
-                    out_str << (v - w_start) << " : " << data[v] << "\n";
+                        out_str << v << " : " <<  data[v*n_page+p] << '\n';
                 }
                 //save
                 StringUtils::string_to_file(o_reduce_path + "/reduce_map_" + std::to_string(p) + "_cl.txt", out_str.str());
@@ -262,10 +258,10 @@ int main(int argc,const char** args)
         auto save_function_compress =
         [=](const std::vector< cl_ushort >& data, size_t words, size_t page_start, size_t n_page)
         {
-            //print state
-            VERBOSE("Start save pages [ " << page_start << ", " << (page_start + n_page) << " ]");
             //save
             size_t end_page = page_start + n_page;
+            //print state
+            VERBOSE("Start save pages [ " << page_start << ", " << end_page << " ]");
             //alloc
             std::stringstream out_str;
             //write
@@ -274,7 +270,7 @@ int main(int argc,const char** args)
                 out_str << v << " : ";
                 for (size_t p = 0; p != n_page; ++p)
                 {
-                    out_str << data[v + words*p] << ' ';
+                    out_str << data[v*n_page+p] << ' ';
                 }
                 out_str << '\n';
             }

@@ -281,7 +281,8 @@ ParserHTML::ParserHTML(const GetHTTP& webpage)
     {
         std::ostringstream output;
         //get title
-        m_title=document.head.title->text;
+        if(document.head.title.get())
+            m_title=document.head.title->text;
         //html to string
         area_to_string(m_text, *document.format(79, Area::LEFT));
         //get links (filter function)

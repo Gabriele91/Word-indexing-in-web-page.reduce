@@ -65,7 +65,7 @@ class WebPage : public GCPointer< WebPage >
         //ptr to word
         const char* c_word = nullptr;
         //new text
-        auto buffer = std::make_unique<char[]>(m_text.size() + 2);
+        auto buffer = std::unique_ptr<char[]>(new char[m_text.size() + 2]);
         std::memset(buffer.get(), 0, m_text.size()+1);
         //ptr to buffer
         char* c_now = buffer.get();
