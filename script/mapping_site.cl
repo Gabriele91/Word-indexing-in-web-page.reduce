@@ -38,9 +38,9 @@ inline void add_row(ADDSQ Row* row,
     print_row(row);
 }
 
-void update_map(unsigned int   row_size,
-                ADDSQ    char* word,
-                ADDSQ    char* raw_rows)
+static void update_map(unsigned int   row_size,
+                       ADDSQ    char* word,
+                       ADDSQ    char* raw_rows)
 {
     //index
     unsigned int i = 0;
@@ -67,18 +67,18 @@ void update_map(unsigned int   row_size,
     add_row(row, word);
 }
 
-bool next_word( ADDSQ char** text )
+inline bool next_word( ADDSQ char** text )
 {
     while((*(*text)) == ' ') ++(*text);
     return ((*(*text)) != '\0');
 }
 
-void eat_word( ADDSQ char**  text )
+inline void eat_word( ADDSQ char**  text )
 {
     while(!is_end_char(*(*text))) ++(*text);
 }
 
-bool not_ignore( read_only ADDSQ  char* words_ignore, ADDSQ  char* word )
+static bool not_ignore( read_only ADDSQ  char* words_ignore, ADDSQ  char* word )
 {
     //loop
     while ( next_word(&words_ignore) )
@@ -92,7 +92,7 @@ bool not_ignore( read_only ADDSQ  char* words_ignore, ADDSQ  char* word )
     return true;
 }
 
-bool no_case_sensitive_not_ignore( read_only ADDSQ  char* words_ignore, ADDSQ  char* word )
+static bool no_case_sensitive_not_ignore( read_only ADDSQ  char* words_ignore, ADDSQ  char* word )
 {
     //loop
     while ( next_word(&words_ignore) )
@@ -117,7 +117,7 @@ kernel void mapping_site( read_only  global GlobalInfo*  ginfo,
     //get global page
     unsigned int page_id       = g_id + ginfo->m_cl_start;
     //get global page
-    unsigned int page_site_id  = g_id + ginfo->m_start;
+    //unsigned int page_site_id  = g_id + ginfo->m_start;
     //get header page
     ADDSQ InfoMap* info   = (ADDSQ InfoMap*)(raw_info + ginfo->m_info_size * page_id);
     //get text

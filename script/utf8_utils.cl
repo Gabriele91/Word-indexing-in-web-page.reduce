@@ -241,7 +241,7 @@ inline void ushort_to_utf8(unsigned short achar, ADDSQ char* out)
     }
 }
 
-unsigned short utf8_to_lower_ushort(ADDSQ const char* achar)
+inline unsigned short utf8_to_lower_ushort(ADDSQ const char* achar)
 {
     
     const unsigned short wc = utf8_to_ushort(achar);
@@ -270,7 +270,7 @@ unsigned short utf8_to_lower_ushort(ADDSQ const char* achar)
         return wc;
 }
 
-void utf8_to_lower_char(ADDSQ const char* achar,ADDSQ char* out)
+inline void utf8_to_lower_char(ADDSQ const char* achar,ADDSQ char* out)
 {
     ushort_to_utf8(utf8_to_lower_ushort(achar),out);
 }
@@ -289,12 +289,12 @@ inline size_t utf8_next_char_count(char c)
     return (size_t)(c!=0);
 }
 
-void utf8_next_char(ADDSQ char** achar)
+inline void utf8_next_char(ADDSQ char** achar)
 {
     (*achar)+=utf8_next_char_count(*(*achar));
 }
 
-void utf8_to_lower_str(ADDSQ char* achar)
+inline void utf8_to_lower_str(ADDSQ char* achar)
 {
     while( *achar )
     {

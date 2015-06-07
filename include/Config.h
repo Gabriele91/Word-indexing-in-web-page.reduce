@@ -25,11 +25,16 @@
 
 #ifdef __APPLE__
     #include <OpenCL/opencl.h>
+    #ifdef DEBUG
+        #ifndef _DEBUG
+            #define _DEBUG
+        #endif
+    #endif
 #else
     #include <CL/opencl.h>
 #endif
 
-#if _DEBUG
+#if defined( _DEBUG )
     #define DEBUGCODE(x) x
 #else
     #define DEBUGCODE(x)

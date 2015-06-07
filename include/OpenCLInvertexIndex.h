@@ -173,12 +173,19 @@ public:
         //mapping
         for(size_t i=start; i!=end; ++i)
         {
-            queue->write_buffer(*m_cl_maps,
-                                true,
-                                maps_size,
-                                maps[i]->byte_size(),
-                                maps[i]->data());
-            maps_size+=maps[i]->byte_size();
+            if (maps[i]->byte_size())
+            {
+                queue->write_buffer(*m_cl_maps,
+                                    true,
+                                    maps_size,
+                                    maps[i]->byte_size(),
+                                    maps[i]->data());
+                maps_size+=maps[i]->byte_size();
+            }
+            DEBUGCODE(else
+            {
+                MESSAGE("Page["<<i<<"] Size 0");
+            });
         }
         //params
         m_args[0] = (cl_uint)m_iimap->count_maps();
@@ -285,12 +292,19 @@ public:
         //mapping
         for(size_t i=start; i!=end; ++i)
         {
-            queue->write_buffer(*m_cl_maps,
-                                true,
-                                maps_size,
-                                maps[i]->byte_size(),
-                                maps[i]->data());
-            maps_size+=maps[i]->byte_size();
+            if(maps[i]->byte_size())
+            {
+                queue->write_buffer(*m_cl_maps,
+                                    true,
+                                    maps_size,
+                                    maps[i]->byte_size(),
+                                    maps[i]->data());
+                maps_size+=maps[i]->byte_size();
+            }
+            DEBUGCODE(else
+            {
+                MESSAGE("Page["<<i<<"] Size 0");
+            });
         }
         //params
         m_args[0] = (cl_uint)m_count_maps;

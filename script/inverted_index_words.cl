@@ -15,7 +15,7 @@ typedef struct __attribute__((packed)) __MapsInfo
 } MapsInfo ;
 
 
-void add_a_map(
+static void add_a_map(
                //input map
                const uint  page_map_rows,
                const uint  page_map_rows_size,
@@ -75,16 +75,19 @@ kernel void inverted_index_words
                 maps_info->m_offset,
                 maps_info->m_page
                 );
-    )
-    //add map to big map
-    add_a_map(//input map
-              maps_info->m_size,
-              maps_info->m_row,
-              page_map,
-              //ouput          //n_maps
-              raw_out_info[1], //word_capacity,
-              raw_out_info[2], //cout_rows,
-              raw_out_map
-              );
-    
+        )
+    //filter
+    if(raw_out_info[2])
+    {
+        //add map to big map
+        add_a_map(//input map
+                  maps_info->m_size,
+                  maps_info->m_row,
+                  page_map,
+                  //ouput          //n_maps
+                  raw_out_info[1], //word_capacity,
+                  raw_out_info[2], //cout_rows,
+                  raw_out_map
+                  );
+    }
 }

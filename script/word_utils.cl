@@ -4,8 +4,8 @@ inline bool is_end_char(char word)
     return (word == ' ') || (word == '\0');
 }
 
-void copy_word(ADDSQ char* dest_word,
-               ADDSQ char* from_word)
+inline void copy_word(ADDSQ char* dest_word,
+                      ADDSQ char* from_word)
 {
     //init index
     unsigned int i = 0;
@@ -19,7 +19,7 @@ void copy_word(ADDSQ char* dest_word,
     dest_word[i] = '\0';
 }
 
-unsigned int word_len(ADDSQ char* word_1)
+inline unsigned int word_len(ADDSQ char* word_1)
 {
     //init index
     unsigned int i = 0;
@@ -33,8 +33,8 @@ unsigned int word_len(ADDSQ char* word_1)
     return i;
 }
 
-bool compare_word(ADDSQ char* word_1,
-                  ADDSQ char* word_2)
+inline bool compare_word(ADDSQ char* word_1,
+                         ADDSQ char* word_2)
 {
     //init index
     unsigned int i = 0;
@@ -50,8 +50,8 @@ bool compare_word(ADDSQ char* word_1,
     return ret_value;
 }
 
-bool compare_word_no_case_sensitive(ADDSQ char* word_1,
-                                    ADDSQ char* word_2)
+inline bool compare_word_no_case_sensitive(ADDSQ char* word_1,
+                                           ADDSQ char* word_2)
 {
     //init index
     unsigned int i = 0;
