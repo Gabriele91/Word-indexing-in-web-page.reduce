@@ -235,7 +235,7 @@ protected:
     OpenCLMemory::ptr m_cl_res;
     OpenCLMemory::ptr m_cl_args;
     //kernel info
-    cl_uint m_args[3]={ 0,0,0 };
+	cl_uint m_args[3];//={ 0,0,0 };
     //info map
     InvertedIndexMap::ptr m_iimap;
     //last vector of info
@@ -359,7 +359,7 @@ protected:
     OpenCLMemory::ptr m_cl_value;
     OpenCLMemory::ptr m_cl_args;
     //kernel info
-    cl_uint m_args[4]={ 0,0,0,0 };
+	cl_uint m_args[4];//={ 0,0,0,0 };
     //last vector of info
     std::vector < MapsInfo > m_info;
     //vector of values
@@ -522,8 +522,7 @@ public:
         OpenCLMemory::ptr word_buffer = iimap->create_buffer(context);
         //max size of a task
         const size_t mem_of_a_column = sizeof(cl_ushort) * iimap->real_count_row();
-        const size_t mem_max_for_task = 1024 * 1024 * 512 / m_devices.size();
-        
+		const size_t mem_max_task_page_size = 1048576 * 512 / m_devices.size();
         //compute columns
         {
             //init
@@ -618,7 +617,7 @@ public:
                             //init
                             size_t this_worker_size = m_kernel_pages->get_work_goup_max_size(m_devices[i]);
                             //compute max work items mem
-                            size_t this_task_max_size = (mem_max_for_task - m_kernel_pages->get_local_mem_size(m_devices[i])) / mem_of_a_column;
+							size_t this_task_max_size = (mem_max_task_page_size - m_kernel_pages->get_local_mem_size(m_devices[i])) / mem_of_a_column;
                             //min
                             this_worker_size = std::min(this_task_max_size, std::min(this_worker_size, (size - added)));
                             //init

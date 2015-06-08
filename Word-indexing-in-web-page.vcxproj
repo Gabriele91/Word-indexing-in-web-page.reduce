@@ -243,6 +243,7 @@
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</DeploymentContent>
       <FileType>Document</FileType>
     </None>
+    <None Include="words.filter" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AlignedAllocator.cpp" />

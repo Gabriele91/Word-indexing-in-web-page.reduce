@@ -16,6 +16,9 @@
     <Filter Include="Lua">
       <UniqueIdentifier>{b95e0a08-0f1a-401c-b8e3-296c7c445dfd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Filter">
+      <UniqueIdentifier>{3bbb8169-9ee5-4e83-9452-42b6327aa833}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AlignedAllocator.cpp">
@@ -126,6 +129,9 @@
     </None>
     <None Include="lua-script\treccani.lua">
       <Filter>Lua</Filter>
+    </None>
+    <None Include="words.filter">
+      <Filter>Filter</Filter>
     </None>
   </ItemGroup>
 </Project>

@@ -26,6 +26,11 @@ public:
     
     }
 
+	const T& get_raw_buffer() const
+	{
+		return m_bf;
+	}
+
     virtual int get()
     {
         if (m_it != m_bf.size())
@@ -276,6 +281,9 @@ static void area_to_string(std::string& out, const Area &a)
 ParserHTML::ParserHTML(const GetHTTP& webpage)
 {
     Buffer< GetHTTP::StreamRead::Bytes > buffer(webpage.get_buffer().m_buffer);
+	//void page
+	if (!buffer.get_raw_buffer().size()) return;
+	//else parser....
     Parser parser(buffer.get_urlistream(), false, false, 
     [this](const Document &document)
     {
